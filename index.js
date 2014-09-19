@@ -3,17 +3,17 @@
 	var WIDTH = container.offsetWidth
 	var HEIGHT = container.offsetHeight
 
-	var POINT_SPACING = 30
+	var POINT_SPACING = 20
 
 	var LINE_COLOUR = 0x5fbc47
 	var LINE_WIDTH = 1
-	var LINE_ALPHA = 0.4
+	var LINE_ALPHA = 0.7
 
 	var ROWS = Math.ceil(HEIGHT / POINT_SPACING)
 	var COLS = Math.ceil(WIDTH / POINT_SPACING)
 
 	var DISTANCE_THRESHOLD = 300
-	var SPEED_DIVISOR = 400
+	var SPEED_DIVISOR = 200
 	var FRICTION = 0.97
 
 	//
@@ -78,14 +78,6 @@
 				_target.addChild(point)
 			}
 		}
-	}
-
-	function assemblePoint(x,y) {
-		var point = new PIXI.DisplayObjectContainer()
-		point.origX = point.x =
-		point.origY = point.y
-
-		return point
 	}
 
 	function animate() {
@@ -187,7 +179,12 @@
 		pause: function() { isRunning = false},
 		distance: function(newDistance) { DISTANCE_THRESHOLD = newDistance },
 		friction: function(newValue) { FRICTION = newValue },
-		tension: function(newValue) { SPEED_DIVISOR = newValue }
+		tension: function(newValue) { SPEED_DIVISOR = newValue },
+		click: function(x, y, time) { 
+			onMouseDown() 
+			_mouseX = x
+			_mouseY = y
+			setTimeout(function(){onMouseUp()}, time||100)
+		}
 	}
-
 }
