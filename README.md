@@ -14,6 +14,7 @@ var field = Field(domNode)
 ### `field.distance(newDistance)`
 ### `field.friction(newValue)`
 ### `field.tension(newValue)`
+### `field.plusOneFrame()`
 
 ## license
 
