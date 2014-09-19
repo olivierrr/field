@@ -82,12 +82,18 @@
 
 	function animate() {
 		if(isRunning) {
-			updatePoints()
-			updateLines()
-			_renderer.render(_stage)
+			update()
+			draw()
 		}
-
 		requestAnimFrame(animate)
+	}
+	
+	function update() {
+		updatePoints()
+		updateLines()
+	}
+	function draw() {
+		_renderer.render(_stage)
 	}
 
 	//
@@ -185,6 +191,11 @@
 			_mouseX = x
 			_mouseY = y
 			setTimeout(function(){onMouseUp()}, time||100)
+		},
+		plusOneFrame: function() {
+			if(isRunning) return
+			update()
+			draw()
 		}
 	}
 }

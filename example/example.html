@@ -14,7 +14,7 @@
 			padding: 0;
 			overflow: hidden;
 		}
-		#canvas-holder {
+		#container {
 			position: absolute;
 			width: 100%;
 			height: 100%;
@@ -39,6 +39,7 @@
 		    this.distance = 300
 		    this.pause = window.FIELD.pause
 		    this.resume = window.FIELD.resume
+		    this.plusOneFrame = window.FIELD.plusOneFrame
 		}
 		window.onload = function() {
 		    var field = new fieldController()
@@ -49,6 +50,7 @@
 		    gui.add(field, 'distance', 1, 1000).onChange(window.FIELD.distance)
 		    gui.add(field, 'pause')
 		    gui.add(field, 'resume')
+		    gui.add(field, 'plusOneFrame')
 		}
 	</script>
 
