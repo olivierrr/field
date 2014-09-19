@@ -9,11 +9,13 @@
 	var LINE_WIDTH = 1
 	var LINE_ALPHA = 0.5
 
+	var MAX_DIST = 100 //
+
 	var ROWS = Math.ceil(HEIGHT / POINT_SPACING)
 	var COLS = Math.ceil(WIDTH / POINT_SPACING)
 
 	var DISTANCE_THRESHOLD = 300
-	var SPEED_DIVISOR = 150
+	var SPEED_DIVISOR = 80
 	var FRICTION = 0.95
 
 	//
@@ -132,8 +134,8 @@
 					distY *= -1 / (distance/100)
 				}
 
-				point.velX += (distX / SPEED_DIVISOR)
-				point.velY += (distY / SPEED_DIVISOR)
+				point.velX += (distX / SPEED_DIVISOR) * getSigmoid((((distance||1)/(DISTANCE_THRESHOLD/100))/100))
+				point.velY += (distY / SPEED_DIVISOR) * getSigmoid((((distance||1)/(DISTANCE_THRESHOLD/100))/100))
 
 				point.x -= point.velX 
 				point.y -= point.velY
@@ -176,6 +178,11 @@
 		var xs = x1 - x2
 		var ys = y1 - y2
 		return Math.sqrt((xs*xs)+(ys*ys))
+	}
+
+	function getSigmoid(t) {
+		//console.log(t)
+    	return 1/(1+Math.pow(Math.E, -t))
 	}
 
 	requestAnimFrame(animate)
