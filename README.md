@@ -11,10 +11,12 @@ var field = Field(domNode)
 
 ### `field.pause()`
 ### `field.resume()`
-### `field.distance(newDistance)`
-### `field.friction(newValue)`
-### `field.tension(newValue)`
+### `field.distance(value)`
+### `field.friction(value)`
+### `field.tension(value)`
 ### `field.plusOneFrame()`
+### `field.reset()`
+###	`field.pointSpacing(value)`
 
 ## license
 

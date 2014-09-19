@@ -3,18 +3,18 @@
 	var WIDTH = container.offsetWidth
 	var HEIGHT = container.offsetHeight
 
-	var POINT_SPACING = 20
+	var POINT_SPACING = 30
 
-	var LINE_COLOUR = 0x5fbc47
+	var LINE_COLOUR = 0xA7A7A7
 	var LINE_WIDTH = 1
-	var LINE_ALPHA = 0.7
+	var LINE_ALPHA = 0.5
 
 	var ROWS = Math.ceil(HEIGHT / POINT_SPACING)
 	var COLS = Math.ceil(WIDTH / POINT_SPACING)
 
 	var DISTANCE_THRESHOLD = 300
-	var SPEED_DIVISOR = 200
-	var FRICTION = 0.97
+	var SPEED_DIVISOR = 150
+	var FRICTION = 0.95
 
 	//
 
@@ -62,6 +62,7 @@
 
 	function init() {
 		var point
+		_points = []
 
 		for(var i=0; i<ROWS; i++) {
 			_points.push([])
@@ -87,7 +88,7 @@
 		}
 		requestAnimFrame(animate)
 	}
-	
+
 	function update() {
 		updatePoints()
 		updateLines()
@@ -127,14 +128,14 @@
 				distY = (point.y - gotoY)
 
 				if (inMouseRange) {
-					distX *= -1
-					distY *= -1
+					distX *= -1 / (distance/100)
+					distY *= -1 / (distance/100)
 				}
 
 				point.velX += (distX / SPEED_DIVISOR)
 				point.velY += (distY / SPEED_DIVISOR)
 
-				point.x -= point.velX
+				point.x -= point.velX 
 				point.y -= point.velY
 
 				point.velX *= FRICTION
@@ -196,6 +197,15 @@
 			if(isRunning) return
 			update()
 			draw()
+		},
+		reset: function() {
+			init()
+		},
+		pointSpacing: function(newValue) {
+			POINT_SPACING = newValue
+			ROWS = Math.ceil(HEIGHT / POINT_SPACING)
+			COLS = Math.ceil(WIDTH / POINT_SPACING)
+			init()
 		}
 	}
 }
