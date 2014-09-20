@@ -9,12 +9,12 @@
 	var LINE_WIDTH = 1
 	var LINE_ALPHA = 0.5
 
-	var MAX_DIST = 100 //
-
 	var ROWS = Math.ceil(HEIGHT / POINT_SPACING)
 	var COLS = Math.ceil(WIDTH / POINT_SPACING)
 
-	var DISTANCE_THRESHOLD = 300
+	var DISTANCE_THRESHOLD_INNER = 0
+	var DISTANCE_THRESHOLD_OUTER = 300
+
 	var SPEED_DIVISOR = 80
 	var FRICTION = 0.95
 
@@ -114,7 +114,7 @@
 
 				if (_mouseIsDown) {
 					distance = getDistance(point.x, point.y, _mouseX, _mouseY)
-					if (distance < DISTANCE_THRESHOLD) {
+					if (distance < DISTANCE_THRESHOLD_OUTER && distance > DISTANCE_THRESHOLD_INNER) {
 						inMouseRange = true
 						gotoX = _mouseX
 						gotoY = _mouseY
@@ -134,8 +134,8 @@
 					distY *= -1 / (distance/100)
 				}
 
-				point.velX += (distX / SPEED_DIVISOR) * getSigmoid((((distance||1)/(DISTANCE_THRESHOLD/100))/100))
-				point.velY += (distY / SPEED_DIVISOR) * getSigmoid((((distance||1)/(DISTANCE_THRESHOLD/100))/100))
+				point.velX += (distX / SPEED_DIVISOR) * getSigmoid((((distance||1)/(DISTANCE_THRESHOLD_OUTER/100))/100))
+				point.velY += (distY / SPEED_DIVISOR) * getSigmoid((((distance||1)/(DISTANCE_THRESHOLD_OUTER/100))/100))
 
 				point.x -= point.velX 
 				point.y -= point.velY
@@ -191,7 +191,12 @@
 	return {
 		resume: function() { isRunning = true },
 		pause: function() { isRunning = false},
-		distance: function(newDistance) { DISTANCE_THRESHOLD = newDistance },
+		outerDistance: function(outerDist) { 
+			DISTANCE_THRESHOLD_OUTER = outerDist || DISTANCE_THRESHOLD_OUTER
+		},
+		innerDistance: function(innerDist) {
+			DISTANCE_THRESHOLD_INNER = innerDist || DISTANCE_THRESHOLD_INNER
+		},
 		friction: function(newValue) { FRICTION = newValue },
 		tension: function(newValue) { SPEED_DIVISOR = newValue },
 		click: function(x, y, time) { 

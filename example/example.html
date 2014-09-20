@@ -37,20 +37,25 @@
 			this.pointSpacing = 30
 		    this.friction = 0.95
 		    this.tension = 80
-		    this.distance = 300
+
+		    this.outerDistance = 300
+		    this.innerDistance = 100
+
 		    this.pause = window.FIELD.pause
 		    this.resume = window.FIELD.resume
 		    this.plusOneFrame = window.FIELD.plusOneFrame
 		    this.reset = window.FIELD.reset
 		}
 		window.onload = function() {
+
 		    var field = new fieldController()
 		    var gui = new dat.GUI()
 
 		    gui.add(field, 'pointSpacing', 20, 100).onChange(window.FIELD.pointSpacing)
 		    gui.add(field, 'friction', 0.60, .99).step(0.01).onChange(window.FIELD.friction)
 		    gui.add(field, 'tension', 1,300).onChange(window.FIELD.tension)
-		    gui.add(field, 'distance', 1, 1000).onChange(window.FIELD.distance)
+		    gui.add(field, 'outerDistance', 1, 1000).onChange(window.FIELD.distance)
+		    gui.add(field, 'innerDistance', 1, 900).onChange(window.FIELD.innerDistance)
 		    gui.add(field, 'pause')
 		    gui.add(field, 'resume')
 		    gui.add(field, 'reset')
