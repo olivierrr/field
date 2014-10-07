@@ -23,7 +23,6 @@
 	var isRunning = true
 
 	var _stage = new PIXI.Stage(0xFFFFFF, true)
-	_stage.buttonMode = true
 
 	var _renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT, null, true)
 	container.appendChild(_renderer.view)
@@ -113,11 +112,13 @@
 				inMouseRange = false
 
 				if (_mouseIsDown) {
-					distance = getDistance(point.x, point.y, _mouseX, _mouseY)
-					if (distance < DISTANCE_THRESHOLD_OUTER && distance > DISTANCE_THRESHOLD_INNER) {
-						inMouseRange = true
-						gotoX = _mouseX
-						gotoY = _mouseY
+					if(mayHit(point.x, point.y, _mouseX, _mouseY)) {
+						distance = getDistance(point.x, point.y, _mouseX, _mouseY)
+						if (distance < DISTANCE_THRESHOLD_OUTER && distance > DISTANCE_THRESHOLD_INNER) {
+							inMouseRange = true
+							gotoX = _mouseX
+							gotoY = _mouseY
+						}
 					}
 				}
 
@@ -174,6 +175,12 @@
 		_lines.lineTo(point2.x, point2.y)
 	}
 
+	// check bounding box
+	function mayHit(x1, y1, x2, y2) {
+		return ((x1 - x2) < DISTANCE_THRESHOLD_OUTER) && ((y1 - y2) < DISTANCE_THRESHOLD_OUTER)
+	}
+
+	// calc magnitude
 	function getDistance(x1, y1, x2, y2) {
 		var xs = x1 - x2
 		var ys = y1 - y2
@@ -181,7 +188,6 @@
 	}
 
 	function getSigmoid(t) {
-		//console.log(t)
     	return 1/(1+Math.pow(Math.E, -t))
 	}
 
