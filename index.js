@@ -42,8 +42,6 @@
 	var _lines = new PIXI.Graphics()
 	_target.addChild(_lines)
 
-	//
-
 	_stage.mousedown = _stage.touchstart = onMouseDown
 	_stage.mousemove = _stage.touchmove = onMouseMove
 	_stage.mouseup = _stage.touchend = onMouseUp
@@ -101,13 +99,12 @@
 	//
 
 	function updatePoints() {
-		var distance, num_points, row, point, inMouseRange, distX, distY, gotoX, gotoY
+		var distance, row, point, inMouseRange, distX, distY, gotoX, gotoY
 
-		for (var j = 0; j < _points.length; j++) {
+		for (var j = 0; j < ROWS; j++) {
 			row = _points[j]
-			num_points = row.length
 
-			for (var i = 0; i < num_points; i++) {
+			for (var i = 0; i < COLS; i++) {
 				point = row[i]
 				inMouseRange = false
 
@@ -120,7 +117,7 @@
 							gotoY = _mouseY
 						}
 					}
-				}
+				} else distance = 0
 
 				if (!inMouseRange) {
 					gotoX = point.origX
@@ -131,14 +128,14 @@
 				distY = (point.y - gotoY)
 
 				if (inMouseRange) {
-					distX *= -1 / (distance/100)
-					distY *= -1 / (distance/100)
+					distX *= -1*(Math.sin(distance/100))
+					distY *= -1*(Math.sin(distance/100))
 				}
 
-				point.velX += (distX / SPEED_DIVISOR) * getSigmoid((((distance||1)/(DISTANCE_THRESHOLD_OUTER/100))/100))
-				point.velY += (distY / SPEED_DIVISOR) * getSigmoid((((distance||1)/(DISTANCE_THRESHOLD_OUTER/100))/100))
+				point.velX += (distX / SPEED_DIVISOR)
+				point.velY += (distY / SPEED_DIVISOR)
 
-				point.x -= point.velX 
+				point.x -= point.velX
 				point.y -= point.velY
 
 				point.velX *= FRICTION
@@ -151,20 +148,23 @@
 		_lines.clear()
 		_lines.lineStyle(LINE_WIDTH, LINE_COLOUR, LINE_ALPHA)
 
-		var num_points, row, point, linkedPoint
+		var row, point
 
-		for (var j = 0; j < _points.length; j++) {
+		for (var j = 0; j < ROWS; j++) {
 			row = _points[j]
-			num_points = row.length
-			for (var i = 0; i < num_points; i++) {
+
+			for (var i = 0; i < COLS; i++) {
 				point = row[i]
 
-				if (i !== 0) assembleLine(point, row[i-1])
+				if (i !== 0) {
+					assembleLine(point, row[i-1])
+				}
 
 				if (j !== 0) {
 					assembleLine(point, _points[j-1][i])
-					if (j%2===0 && i!==0) assembleLine(point, _points[j-1][i-1])
-					if(i!==num_points-1 && j%2!==0) assembleLine(point, _points[j-1][i+1])
+
+					if (i!==0 && j%2===0) assembleLine(point, _points[j-1][i-1])
+					else if (i!==COLS-1 && j%2!==0) assembleLine(point, _points[j-1][i+1])
 				}
 			}
 		}
@@ -188,8 +188,12 @@
 	}
 
 	function getSigmoid(t) {
-    	return 1/(1+Math.pow(Math.E, -t))
-	}
+		// if(t !== 0) console.log(t)
+		// var o = 1/(1+Math.pow(Math.E, -t))
+		// //console.log(o)
+  		// return o
+  		return 1
+    }
 
 	requestAnimFrame(animate)
 	init()
@@ -198,6 +202,7 @@
 		resume: function() { isRunning = true },
 		pause: function() { isRunning = false},
 		outerDistance: function(outerDist) { 
+			console.log(outerDist)
 			DISTANCE_THRESHOLD_OUTER = outerDist || DISTANCE_THRESHOLD_OUTER
 		},
 		innerDistance: function(innerDist) {
@@ -206,7 +211,7 @@
 		friction: function(newValue) { FRICTION = newValue },
 		tension: function(newValue) { SPEED_DIVISOR = newValue },
 		click: function(x, y, time) { 
-			onMouseDown() 
+			onMouseDown()
 			_mouseX = x
 			_mouseY = y
 			setTimeout(function(){onMouseUp()}, time||100)
@@ -227,3 +232,5 @@
 		}
 	}
 }
+
+// good
