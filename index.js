@@ -187,14 +187,6 @@
 		return Math.sqrt((xs*xs)+(ys*ys))
 	}
 
-	function getSigmoid(t) {
-		// if(t !== 0) console.log(t)
-		// var o = 1/(1+Math.pow(Math.E, -t))
-		// //console.log(o)
-  		// return o
-  		return 1
-    }
-
 	requestAnimFrame(animate)
 	init()
 
@@ -232,5 +224,3 @@
 		}
 	}
 }
-
-// good
