@@ -1,7 +1,7 @@
 field
 =====
 
-[## live](http://olivierrr.github.io/field/example/example.html)
+[live](http://olivierrr.github.io/field/example/example.html)
 
 ## usage
 
